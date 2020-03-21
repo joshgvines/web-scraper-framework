@@ -1,5 +1,8 @@
-# gitabz
-gitabz
+# Gitabz
+
+**Version 1.0.0**
+
+Allows the creation tabs containing GIT Bash terminal windows.
 
 ## License & Copyright
 
