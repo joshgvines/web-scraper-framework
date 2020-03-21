@@ -1,6 +1,37 @@
 # Compiled class file
 *.class
 
+# Basic Settings
+/.idea
+/idea
+.idea
+
+/settings
+/.settings
+.settings
+
+
+.idea/vcs.xml
+.idea/workspace.xml
+*.log
+*.lck
+
+*.classpath
+.classpath
+
+
+# Output
+/build
+/out
+/.gradle
+/gradle
+
+/eclipse
+.eclipse
+.metadata
+/metadata
+
+
 # Log file
 *.log
 
