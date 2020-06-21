@@ -1,8 +1,8 @@
-# Gitabz
+# WebScraperFramework
 
-**Version 1.0.0**
+**Version 0.0.1**
 
-Allows the creation tabs containing GIT Bash terminal windows.
+Basic Java web scraping tool.
 
 ## License & Copyright
 
