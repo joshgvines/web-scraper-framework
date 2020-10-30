@@ -4,9 +4,9 @@ public class ImageRequest {
 
     public ImageRequest(final String givenURI) {
 
-        ClientRequestManager clientRequestManager = new ClientRequestManager(givenURI);
+        //ClientRequestManager clientRequestManager = new ClientRequestManager(givenURI);
 
-        clientRequestManager.attemptHttpClientRequest();
+        //clientRequestManager.attemptHttpClientRequest();
 
     }
 }

@@ -9,9 +9,9 @@ public class ParagraphRequest {
 
     public ParagraphRequest(final String givenURI) {
 
-        ClientRequestManager clientRequestManager = new ClientRequestManager(givenURI);
+        ClientRequestManager clientRequestManager = new ClientRequestManager();
 
-        clientRequestManager.attemptHttpClientRequest();
+        clientRequestManager.attemptHttpClientRequest(givenURI);
 
     }
 
