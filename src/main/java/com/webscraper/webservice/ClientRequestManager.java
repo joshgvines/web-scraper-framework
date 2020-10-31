@@ -33,18 +33,18 @@ public class ClientRequestManager {
         return isHTML;
     }
 
-    private static boolean checkIsHTML(String daFaq) {
-        return (!daFaq.contains("html>")) && (!daFaq.contains("HTML>"));
+    private static boolean checkIsHTML(String pageString) {
+        return (!pageString.contains("html>")) && (!pageString.contains("HTML>"));
     }
 
-    private static String parse(String daFaq) {
-        if (!checkIsHTML(daFaq)) {
+    private static String parse(String pageString) {
+        if (!checkIsHTML(pageString)) {
             System.out.println("HttpClient Failed To Get Valid Response");
             isHTML = false;
         }
-        ResponseManager.processWebPageData(daFaq);
+        ResponseManager.processWebPageData(pageString);
         isHTML = true;
-        return daFaq;
+        return pageString;
     }
 
     private HttpRequest buildRequest(String givenURL) {

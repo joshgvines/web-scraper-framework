@@ -6,41 +6,41 @@ import java.util.regex.Pattern;
 
 public class ResponseManager {
 
-    public static void processWebPageData(String daFaq) {
-        String[] lines = daFaq.split(System.getProperty("line.separator"));
-        boolean hasLines = false;
+    private static ArrayList<String> links;
 
-        ArrayList<String> links = new ArrayList();
-        StringBuilder pageContent = new StringBuilder();
-        for (String line : lines) {
-            if (line.length() >= 3 && line.contains("<a>")) {
-                hasLines = true;
+    public static void processWebPageData(String pageString) {
+        if (pageString.length() >= 2 && (pageString.contains("/html>") || pageString.contains("/HTML>"))) {
+            String[] lines = pageString.split(System.getProperty("line.separator"));
+            if (readLinesForLinks(lines)) {
+                outputLinks();
             }
+        }
+    }
+
+    private static boolean readLinesForLinks(String[] lines) {
+        StringBuilder pageContent = new StringBuilder();
+         links = new ArrayList();
+
+        for (String line : lines) {
             String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(line);
-
             while (m.find()) {
                 String link = m.group();
                 if (!links.contains(link)) {
                     links.add(m.group());
                 }
             }
-            if (line.contains("/html>") || line.contains("/HTML>")) {
-                System.out.println(line);
-                break;
-            }
             System.out.println(line);
             pageContent.append(line);
         }
-        if ((lines.length < 1) && (!hasLines)) {
-            System.out.println("Filter did not catch anything");
-        }
-        System.out.println("\n::LINKS:::::");
+        return !( links.isEmpty() );
+    }
+
+    private static void outputLinks() {
         for (String link : links) {
             System.out.println(link);
         }
-
     }
 
 }
