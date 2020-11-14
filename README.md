@@ -1,4 +1,4 @@
-# WebScraperFramework
+# Web Scraper Framework
 
 **Version 0.0.1**
 
