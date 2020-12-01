@@ -40,7 +40,7 @@ public class LinkRequest implements Request {
         links = new ArrayList();
 
         for (String line : lines) {
-            Pattern p = Pattern.compile(HtmlFilter.FIND_ANY_URL.getFilter());
+            Pattern p = Pattern.compile(HtmlFilter.FIND_ANY_HTTPS_URL.getFilter());
             Matcher m = p.matcher(line);
             while (m.find()) {
                 String link = m.group();
