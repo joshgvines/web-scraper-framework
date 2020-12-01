@@ -1,6 +1,6 @@
-package com.webscraper.enums;
+package com.webscraper.filters;
 
-public enum Filter {
+public enum HtmlFilter {
 
     FIND_PARAGRAPH("<p>"),
     END_PARAGRAPH("</p>"),
@@ -13,7 +13,7 @@ public enum Filter {
 
     private String filter;
 
-    Filter(String givenFilter) {
+    HtmlFilter(String givenFilter) {
         this.filter = givenFilter;
     }
 

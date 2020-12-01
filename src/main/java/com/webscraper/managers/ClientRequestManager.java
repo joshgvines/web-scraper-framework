@@ -1,4 +1,6 @@
-package com.webscraper.webservice;
+package com.webscraper.managers;
+
+import com.webscraper.requests.WebScraperRequest;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -8,17 +10,19 @@ import java.time.Duration;
 
 public class ClientRequestManager {
 
-    private HttpClient httpClient;
+    private static HttpClient httpClient;
     private static boolean isHTML;
+    private static WebScraperRequest webScraperRequest;
 
-    public HttpClient buildClient() {
+    public static HttpClient buildClient() {
         return HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_2)
                 .followRedirects(HttpClient.Redirect.NORMAL)
                 .build();
     }
 
-    public boolean attemptHttpClientRequest(String givenURL) {
+    public static boolean attemptHttpClientRequest(String givenURL, WebScraperRequest scraperRequest) {
+        webScraperRequest = scraperRequest;
         httpClient = buildClient();
         try {
             System.out.println(":::Client Attempt::::");
@@ -42,12 +46,12 @@ public class ClientRequestManager {
             System.out.println("HttpClient Failed To Get Valid Response");
             isHTML = false;
         }
-        ResponseManager.processWebPageData(pageString);
+        webScraperRequest.execute(pageString);
         isHTML = true;
         return pageString;
     }
 
-    private HttpRequest buildRequest(String givenURL) {
+    private static HttpRequest buildRequest(String givenURL) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(givenURL))
                 .timeout(Duration.ofMinutes(1))

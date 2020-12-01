@@ -1,9 +1,11 @@
-package com.webscraper.enums;
+package com.webscraper.demo.cli;
 
 public enum CLICommand {
 
-    SCRAPE_FOR_IMAGE("/image"),
-    SCRAPE_FOR_TEXT("/text"),
+    IMAGE("/image"),
+    TEXT("/text"),
+    LINK("/link"),
+    HELP("/help"),
 
     EXIT("/exit");
 
