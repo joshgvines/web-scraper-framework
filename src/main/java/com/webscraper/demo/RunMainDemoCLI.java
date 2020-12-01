@@ -1,15 +1,14 @@
-import com.webscraper.input.WebScraperCLI;
+package com.webscraper.demo;
 
-public class MainClass {
+import com.webscraper.demo.cli.WebScraperCLI;
+
+public class RunMainDemoCLI {
 
     public static void main(String[] args) {
 
         try {
-
             // Basic command line interface for demo
-            WebScraperCLI webScraperCLI = new WebScraperCLI();
-            webScraperCLI.runWebScraperCLI();
-
+            WebScraperCLI.runWebScraperCLI();
         } catch(Exception e) {
             e.printStackTrace();
         }

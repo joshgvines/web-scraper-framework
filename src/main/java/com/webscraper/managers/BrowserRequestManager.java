@@ -1,4 +1,4 @@
-package com.webscraper.webservice;
+package com.webscraper.managers;
 
 public class BrowserRequestManager {
 
