@@ -1,17 +1,25 @@
 package com.webscraper.requests;
 
+import com.webscraper.managers.ClientRequestManager;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LinkRequest implements WebScraperRequest {
+public class LinkRequest implements Request {
 
     private static ArrayList<String> links;
 
-    public void execute(String pageString) {
+    @Override
+    /**
+     *
+     * @param pageString
+     */
+    public void execute(String givenUrl) {
         System.out.println("Link Request");
+        String pageString = ClientRequestManager.attemptClientRequest(givenUrl);
         String[] lines = pageString.split(System.getProperty("line.separator"));
-        if (readLinesForLinks(lines)) {
+        if (findLinks(lines)) {
             outputLinks();
         }
     }
@@ -26,7 +34,7 @@ public class LinkRequest implements WebScraperRequest {
         }
     }
 
-    private static boolean readLinesForLinks(String[] lines) {
+    private static boolean findLinks(String[] lines) {
         StringBuilder pageContent = new StringBuilder();
         links = new ArrayList();
 

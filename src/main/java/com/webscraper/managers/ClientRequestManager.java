@@ -1,5 +1,6 @@
 package com.webscraper.managers;
 
+import com.webscraper.requests.Request;
 import com.webscraper.requests.WebScraperRequest;
 
 import java.net.URI;
@@ -12,17 +13,9 @@ public class ClientRequestManager {
 
     private static HttpClient httpClient;
     private static boolean isHTML;
-    private static WebScraperRequest webScraperRequest;
+    private static String pageString;
 
-    public static HttpClient buildClient() {
-        return HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_2)
-                .followRedirects(HttpClient.Redirect.NORMAL)
-                .build();
-    }
-
-    public static boolean attemptHttpClientRequest(String givenURL, WebScraperRequest scraperRequest) {
-        webScraperRequest = scraperRequest;
+    public static String attemptClientRequest(String givenURL) {
         httpClient = buildClient();
         try {
             System.out.println(":::Client Attempt::::");
@@ -34,21 +27,14 @@ public class ClientRequestManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return isHTML;
-    }
-
-    private static boolean checkIsHTML(String pageString) {
-        return (!pageString.contains("html>")) && (!pageString.contains("HTML>"));
-    }
-
-    private static String parse(String pageString) {
-        if (!checkIsHTML(pageString)) {
-            System.out.println("HttpClient Failed To Get Valid Response");
-            isHTML = false;
-        }
-        webScraperRequest.execute(pageString);
-        isHTML = true;
         return pageString;
+    }
+
+    public static HttpClient buildClient() {
+        return HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .build();
     }
 
     private static HttpRequest buildRequest(String givenURL) {
@@ -57,6 +43,19 @@ public class ClientRequestManager {
                 .timeout(Duration.ofMinutes(1))
                 .header("Content-Type", "application/json")
                 .build();
+    }
+
+    private static String parse(String html) {
+        if (!checkIsHTML(html)) {
+            System.out.println("HttpClient Failed To Get Valid Response");
+            isHTML = false;
+        }
+        pageString = html;
+        return html;
+    }
+
+    private static boolean checkIsHTML(String pageString) {
+        return (!pageString.contains("html>")) && (!pageString.contains("HTML>"));
     }
 
 }

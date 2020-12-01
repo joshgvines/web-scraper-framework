@@ -1,8 +1,11 @@
 package com.webscraper.requests;
 
-public class ImageRequest implements WebScraperRequest {
+public class ImageRequest implements Request {
 
     @Override
+    /**
+     *
+     */
     public void execute(String pageString) {
 
     }

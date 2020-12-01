@@ -1,8 +1,6 @@
 package com.webscraper.demo.cli;
 
-import com.webscraper.requests.ImageRequest;
-import com.webscraper.requests.ParagraphRequest;
-import com.webscraper.requests.RequestController;
+import com.webscraper.requests.WebScraper;
 
 import java.util.Scanner;
 
@@ -30,11 +28,11 @@ public class WebScraperCLI {
         String givenURI = "example.com";
 
         if (givenCommand.equals(CLICommand.IMAGE.getCommand())) {
-            RequestController.imageRequest(getUserInput());
+            new WebScraper().imageRequest(getUserInput());
         } else if (givenCommand.equals(CLICommand.TEXT.getCommand())) {
-            RequestController.paragraphRequest(getUserInput());
+            new WebScraper().paragraphRequest(getUserInput());
         } else if (givenCommand.equals(CLICommand.LINK.getCommand())) {
-            RequestController.linkRequest(getUserInput());
+            new WebScraper().linkRequest(getUserInput());
         } else if (givenCommand.equals(CLICommand.EXIT.getCommand())) {
             System.out.println("exiting");
             System.exit(0);
