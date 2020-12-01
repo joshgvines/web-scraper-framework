@@ -9,7 +9,8 @@ public enum HtmlFilter {
     END_IMAGE("</img>"),
 
     FIND_HTTPS_URL("http:"),
-    FIND_HTTP_URL("https:");
+    FIND_HTTP_URL("https:"),
+    FIND_ANY_URL("\\(?\\b(http://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]");
 
     private String filter;
 

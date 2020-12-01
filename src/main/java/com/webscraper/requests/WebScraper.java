@@ -2,12 +2,16 @@ package com.webscraper.requests;
 
 import com.webscraper.managers.ClientRequestManager;
 
+import java.util.List;
+
 /**
  * Controller for Request types.
  */
 public class WebScraper implements WebScraperRequest {
 
+
     private Request request;
+    private List<Request> requestList;
 
     public void imageRequest(String givenUrl) {
         request = new ImageRequest();

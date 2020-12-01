@@ -1,5 +1,6 @@
 package com.webscraper.requests;
 
+import com.webscraper.filters.HtmlFilter;
 import com.webscraper.managers.ClientRequestManager;
 
 import java.util.ArrayList;
@@ -39,8 +40,7 @@ public class LinkRequest implements Request {
         links = new ArrayList();
 
         for (String line : lines) {
-            String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";
-            Pattern p = Pattern.compile(regex);
+            Pattern p = Pattern.compile(HtmlFilter.FIND_ANY_URL.getFilter());
             Matcher m = p.matcher(line);
             while (m.find()) {
                 String link = m.group();
