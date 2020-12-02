@@ -10,7 +10,7 @@ public class ImageRequest implements Request {
 
     }
 
-    public boolean isValid(String key) {
+    public boolean isValid() {
         return true;
     }
 }

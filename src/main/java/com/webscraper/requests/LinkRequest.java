@@ -18,14 +18,14 @@ public class LinkRequest implements Request {
      */
     public void execute(String givenUrl) {
         System.out.println("Link Request");
-        String pageString = ClientRequestManager.attemptClientRequest(givenUrl);
-        String[] lines = pageString.split(System.getProperty("line.separator"));
-        if (findLinks(lines)) {
+        String page = ClientRequestManager.attemptClientRequest(givenUrl);
+        //String[] lines = pageString.split(System.getProperty("line.separator"));
+        if (findLinks(page)) {
             outputLinks();
         }
     }
 
-    public boolean isValid(String key) {
+    public boolean isValid() {
         return true;
     }
 
@@ -35,21 +35,15 @@ public class LinkRequest implements Request {
         }
     }
 
-    private static boolean findLinks(String[] lines) {
-        StringBuilder pageContent = new StringBuilder();
+    private static boolean findLinks(String page) {
         links = new ArrayList();
-
-        for (String line : lines) {
-            Pattern p = Pattern.compile(HtmlFilter.FIND_ANY_HTTPS_URL.getFilter());
-            Matcher m = p.matcher(line);
-            while (m.find()) {
-                String link = m.group();
-                if (!links.contains(link)) {
-                    links.add(m.group());
-                }
+        Pattern p = Pattern.compile(HtmlFilter.FIND_ANY_HTTPS_URL.getFilter());
+        Matcher m = p.matcher(page);
+        while (m.find()) {
+            String link = m.group();
+            if (!links.contains(link)) {
+                links.add(m.group());
             }
-            System.out.println(line);
-            pageContent.append(line);
         }
         return !( links.isEmpty() );
     }

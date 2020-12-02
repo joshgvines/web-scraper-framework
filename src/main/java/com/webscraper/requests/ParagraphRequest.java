@@ -18,14 +18,13 @@ public class ParagraphRequest implements Request {
      */
     public void execute(String givenUrl) {
         System.out.println("Paragraph Request");
-        String pageString = ClientRequestManager.attemptClientRequest(givenUrl);
-        String[] lines = pageString.split(System.getProperty("line.separator"));
-        if (findParagraphs(lines)) {
+        String page = ClientRequestManager.attemptClientRequest(givenUrl);
+        if (findParagraphs(page)) {
             outputParagraphs();
         }
     }
 
-    public boolean isValid(String key) {
+    public boolean isValid() {
         return true;
     }
 
@@ -35,48 +34,22 @@ public class ParagraphRequest implements Request {
         }
     }
 
-    private static boolean findParagraphs(String[] lines) {
-        //StringBuilder pageContent = new StringBuilder();
+    private static boolean findParagraphs(String page) {
         paragraphs = new ArrayList();
-
-        boolean inside = false;
-        String aLine = "";
-        for (String line : lines) {
-            aLine = line;
-            try {
-                Thread.sleep(1000000000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        Pattern p = Pattern.compile(HtmlFilter.FIND_PARAGRAPH.getFilter());
+        Matcher m = p.matcher(page);
+        while (m.find()) {
+            String link = m.group();
+            if (!paragraphs.contains(link)) {
+                paragraphs.add(m.group());
             }
-//            while (line.contains("<script")) {
-//                System.out.println(line);
-//                String toRemove = line.substring(line.indexOf("<script"), line.indexOf("</script>"));
-//                System.out.println(toRemove);
-//                line.replace(toRemove, "");
-//            }
-
-            if (line.contains(HtmlFilter.FIND_PARAGRAPH.getFilter()) && line.contains("</p>")) {
-                paragraphs.add(line);
-                inside = false;
-            } else if (line.contains("</p>")) {
-                paragraphs.add(line);
-                inside = false;
-            } else if (line.trim().contains(HtmlFilter.FIND_PARAGRAPH.getFilter())) {
-                paragraphs.add(line);
-                inside = true;
-            } else if (inside) {
-                paragraphs.add(line);
-            }
-            //System.out.println(line);
-            //pageContent.append(line);
         }
-        System.out.println(aLine);
         return !( paragraphs.isEmpty() );
     }
 
     private static void outputParagraphs() {
-        for (String link : paragraphs) {
-            System.out.println(link);
+        for (String para : paragraphs) {
+            System.out.println(para);
         }
     }
 
