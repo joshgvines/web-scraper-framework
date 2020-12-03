@@ -4,6 +4,6 @@ public interface Request {
 
     void execute(String givenUrl);
 
-    boolean isValid();
+    boolean isValid(String dataToValidate);
 
 }

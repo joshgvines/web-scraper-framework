@@ -2,6 +2,7 @@ package com.webscraper.requests;
 
 import com.webscraper.filters.HtmlFilter;
 import com.webscraper.managers.ClientRequestManager;
+import com.webscraper.requests.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -17,21 +18,16 @@ public class ParagraphRequest implements Request {
      * @param pageString
      */
     public void execute(String givenUrl) {
-        System.out.println("Paragraph Request");
-        String page = ClientRequestManager.attemptClientRequest(givenUrl);
-        if (findParagraphs(page)) {
-            outputParagraphs();
+        if (isValid(givenUrl)) {
+            String page = ClientRequestManager.attemptClientRequest(givenUrl);
+            if (findParagraphs(page)) {
+                outputParagraphs();
+            }
         }
     }
 
-    public boolean isValid() {
-        return true;
-    }
-
-    public static void processWebPageData(String pageString) {
-        if (pageString.length() >= 2 && (pageString.contains("/html>") || pageString.contains("/HTML>"))) {
-
-        }
+    public boolean isValid(String givenUrl) {
+        return NetworkUtil.checkConnectionIsValid(givenUrl);
     }
 
     private static boolean findParagraphs(String page) {
