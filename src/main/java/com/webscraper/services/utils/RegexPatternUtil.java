@@ -1,4 +1,4 @@
-package com.webscraper.requests.utils;
+package com.webscraper.services.utils;
 
 import com.webscraper.filters.HtmlFilter;
 

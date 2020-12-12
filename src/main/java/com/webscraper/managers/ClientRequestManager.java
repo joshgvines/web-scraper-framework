@@ -1,8 +1,5 @@
 package com.webscraper.managers;
 
-import com.webscraper.requests.Request;
-import com.webscraper.requests.WebScraperRequest;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
