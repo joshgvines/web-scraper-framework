@@ -1,5 +1,8 @@
 package com.webscraper.filters;
 
+/**
+ * enum class which maps Regex and string filters to request types and functions.
+ */
 public enum HtmlFilter {
 
     FIND_PARAGRAPH("<p(.*?)p>"),

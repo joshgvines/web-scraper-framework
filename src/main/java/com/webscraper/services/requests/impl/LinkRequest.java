@@ -10,16 +10,19 @@ import java.util.List;
 
 public class LinkRequest implements Request {
 
-    protected LinkRequest() {
+    private String givenUrl = "";
+
+    public LinkRequest(String givenUrl) {
+        this.givenUrl = givenUrl;
     }
 
     private static List<String> links;
 
     @Override
     /**
-     *
+     * Execute LinkRequest
      */
-    public void execute(String givenUrl) {
+    public void execute() {
         if (NetworkUtil.checkConnectionIsValid(givenUrl)) {
             String page = ClientRequestManager.attemptClientRequest(givenUrl);
             if (findLinks(page)) {

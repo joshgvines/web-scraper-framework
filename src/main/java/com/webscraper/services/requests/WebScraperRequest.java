@@ -1,5 +1,6 @@
 package com.webscraper.services.requests;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,9 +34,9 @@ public interface WebScraperRequest {
      *
      * TODO: this should be more of a queue or dequeue...
      *
-     * @param requestMap
+     * @param requestList
      * @throws InterruptedException
      */
-    void multiRequest(Map<String, Request> requestMap) throws InterruptedException;
+    void multiRequest(List<Request> requestList) throws InterruptedException;
 
 }

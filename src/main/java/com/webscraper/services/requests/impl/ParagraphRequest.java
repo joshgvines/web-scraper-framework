@@ -13,17 +13,19 @@ import java.util.regex.Pattern;
 
 public class ParagraphRequest implements Request {
 
-    public ParagraphRequest() {
+    private String givenUrl = "";
+
+    public ParagraphRequest(String givenUrl) {
+        this.givenUrl = givenUrl;
     }
 
     private static List<String> paragraphs;
 
     @Override
     /**
-     *
-     * @param pageString
+     * Execute ParagraphRequest
      */
-    public void execute(String givenUrl) {
+    public void execute() {
         if (NetworkUtil.checkConnectionIsValid(givenUrl)) {
             String page = ClientRequestManager.attemptClientRequest(givenUrl);
             if (findParagraphs(page)) {

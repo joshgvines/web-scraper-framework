@@ -10,16 +10,19 @@ import java.util.List;
 
 public class ImageRequest implements Request {
 
-    protected ImageRequest() {
+    private String givenUrl = "";
+
+    public ImageRequest(String givenUrl) {
+        this.givenUrl = givenUrl;
     }
 
     private static List<String> images;
 
     @Override
     /**
-     *
+     * Execute ImageRequest
      */
-    public void execute(String givenUrl) {
+    public void execute() {
         if (NetworkUtil.checkConnectionIsValid(givenUrl)) {
             String page = ClientRequestManager.attemptClientRequest(givenUrl);
             if (findImages(page)) {

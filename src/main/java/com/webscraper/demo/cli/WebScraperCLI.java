@@ -25,14 +25,13 @@ public class WebScraperCLI {
      * @param givenCommand
      */
     private static void readCommand(final String givenCommand) {
-        String givenURI = "example.com";
-
+        RequestHandler requestHandler = new RequestHandler();
         if (givenCommand.equals(CLICommand.IMAGE.getCommand())) {
-            new RequestHandler().imageRequest(getUserInput());
+            requestHandler.imageRequest(getUserInput());
         } else if (givenCommand.equals(CLICommand.TEXT.getCommand())) {
-            new RequestHandler().paragraphRequest(getUserInput());
+            requestHandler.paragraphRequest(getUserInput());
         } else if (givenCommand.equals(CLICommand.LINK.getCommand())) {
-            new RequestHandler().linkRequest(getUserInput());
+            requestHandler.linkRequest(getUserInput());
         } else if (givenCommand.equals(CLICommand.EXIT.getCommand())) {
             System.out.println("exiting");
             System.exit(0);
@@ -41,7 +40,7 @@ public class WebScraperCLI {
         }
     }
     private static String getUserInput() {
-        String userInput = null;
+        String userInput;
         try {
             userInput = keyboard.nextLine();
         } catch (Exception e) {
