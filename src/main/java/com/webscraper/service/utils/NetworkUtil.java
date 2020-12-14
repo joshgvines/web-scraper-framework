@@ -1,4 +1,7 @@
-package com.webscraper.services.utils;
+package com.webscraper.service.utils;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -6,7 +9,9 @@ import java.net.URL;
 /**
  * Util class for validating network connections.
  */
-public class NetworkUtil {
+public final class NetworkUtil {
+
+    private static final Logger LOG = LogManager.getLogger(NetworkUtil.class);
 
     public static boolean checkConnectionIsValid(String givenURL) {
         try {
@@ -18,6 +23,7 @@ public class NetworkUtil {
             return (responseCode == 200);
 
         } catch (Exception ex) {
+            LOG.error("Failed to create a valid URL connection with: {} with error: {}", givenURL, ex);
             ex.printStackTrace();
             return false;
         }

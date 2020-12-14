@@ -1,4 +1,4 @@
-package com.webscraper.managers;
+package com.webscraper.manager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,9 +7,10 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class BufferedRequestManager {
+public final class BufferedRequestManager {
 
-    public String attemptBufferedRequest(URL url) throws IOException {
+    public static String attemptBufferedRequest(String givenUrl) throws IOException {
+        URL url = new URL(givenUrl);
         URLConnection urlConn = url.openConnection();
         urlConn.setRequestProperty(
                 "User-Agent",
@@ -19,11 +20,11 @@ public class BufferedRequestManager {
         return getBufferedPageSource(urlConn.getInputStream());
     }
 
-    private boolean checkIsHTML(String daFaq) {
+    private static boolean checkIsHTML(String daFaq) {
         return (!daFaq.contains("html>")) && (!daFaq.contains("HTML>"));
     }
 
-    private String getBufferedPageSource(InputStream is) {
+    private static String getBufferedPageSource(InputStream is) {
         StringBuilder sb = new StringBuilder();
         try ( BufferedReader br = new BufferedReader( new InputStreamReader(is))) {
             String line;
