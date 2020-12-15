@@ -1,11 +1,8 @@
 package com.webscraper.service.request.html.impl;
 
 import com.webscraper.filters.HtmlFilter;
-import com.webscraper.manager.BufferedRequestManager;
-import com.webscraper.manager.ClientRequestManager;
 import com.webscraper.service.request.html.HTMLRequest;
 import com.webscraper.service.utils.FileIOUtil;
-import com.webscraper.service.utils.NetworkUtil;
 import com.webscraper.service.utils.RegexPatternUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,21 +17,21 @@ public class LinkHTMLRequest implements HTMLRequest {
 
     private static final Logger LOG = LogManager.getLogger(LinkHTMLRequest.class);
 
-    private String givenUrl;
+    private final String GIVEN_URL;
     private String key;
     private boolean toFile;
     private BufferedWriter bufferedWriter;
 
-    public LinkHTMLRequest(String givenUrl) {
-        this(givenUrl, false);
+    public LinkHTMLRequest(String GIVEN_URL) {
+        this(GIVEN_URL, false);
     }
 
-    public LinkHTMLRequest(String givenUrl, boolean toFile) {
-        this(givenUrl, toFile, null);
+    public LinkHTMLRequest(String GIVEN_URL, boolean toFile) {
+        this(GIVEN_URL, toFile, null);
     }
 
-    public LinkHTMLRequest(String givenUrl, boolean toFile, String key) {
-        this.givenUrl = givenUrl;
+    public LinkHTMLRequest(String GIVEN_URL, boolean toFile, String key) {
+        this.GIVEN_URL = GIVEN_URL;
         this.toFile = toFile;
         this.key = key;
     }
@@ -45,36 +42,28 @@ public class LinkHTMLRequest implements HTMLRequest {
     /**
      * Execute LinkRequest
      */
-    public void execute() {
+    public void execute(String page) {
         LOG.info("Starting Link Request.");
-        if (NetworkUtil.checkConnectionIsValid(givenUrl)) {
-            String page = null;
+        if (findLinks(page)) {
             try {
-                page = ClientRequestManager.attemptClientRequest(givenUrl);
-            } catch (Exception ex) {
-                LOG.error("Web location was valid, but failed to open client connection.");
-                try {
-                    page = BufferedRequestManager.attemptBufferedRequest(givenUrl);
-                } catch (Exception badex) {
-                    badex.printStackTrace();
+                if (toFile) {
+                    runWithFileOutput();
+                } else {
+                    outputLinks();
                 }
-            }
-            if (findLinks(page)) {
-                try {
-                    if (toFile) {
-                        runWithFileOutput();
-                    } else {
-                        outputLinks();
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+            } catch (IOException ex) {
+                LOG.error("Failed to write request data to File with error: {}", ex);
+                ex.printStackTrace();
             }
         }
     }
 
+    public String getUrl() {
+        return GIVEN_URL;
+    }
+
     private boolean findLinks(String page) {
-        links = RegexPatternUtil.lookForHTMLMatches(HtmlFilter.FIND_ANY_HTTPS_URL, page, key);
+        links = RegexPatternUtil.lookForHTMLMatches(HtmlFilter.FIND_HTTP_URL, page, key);
         return !(links.isEmpty());
     }
 
@@ -84,8 +73,13 @@ public class LinkHTMLRequest implements HTMLRequest {
             if (link.contains("=//")) {
                 link = link.replace("=//", "https://");
             }
+            if (link.contains("=\"//")) {
+                LOG.info("FROM: {}", link);
+                link = link.replace("=\"//", "https://");
+                LOG.info("TO: {}", link);
+            }
             if (toFile) {
-                bufferedWriter.append("<a href=\""+link+"\">"+ link +"</a><br>" + newLine);
+                bufferedWriter.append("<a href=\"" + link + "\">" + link + "</a><br>" + newLine);
 //                bufferedWriter.append(link + newLine);
             }
             System.out.println(link);

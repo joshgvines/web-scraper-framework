@@ -6,28 +6,36 @@ import com.webscraper.service.request.html.HTMLRequest;
 import com.webscraper.service.utils.FileIOUtil;
 import com.webscraper.service.utils.NetworkUtil;
 import com.webscraper.service.utils.RegexPatternUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 public class ParagraphHTMLRequest implements HTMLRequest {
 
-    private String givenUrl;
+    private static final Logger LOG = LogManager.getLogger(ParagraphHTMLRequest.class);
+
+    private final String GIVEN_URL;
     private String key;
     private boolean toFile;
     private BufferedWriter bufferedWriter;
 
-    public ParagraphHTMLRequest(String givenUrl) {
-        this(givenUrl, false);
+    public ParagraphHTMLRequest(String GIVEN_URL) {
+        this(GIVEN_URL, false);
     }
 
-    public ParagraphHTMLRequest(String givenUrl, boolean toFile) {
-        this.givenUrl = givenUrl;
+    public ParagraphHTMLRequest(String GIVEN_URL, boolean toFile) {
+        this(GIVEN_URL, toFile, null);
+    }
+
+    public ParagraphHTMLRequest(String GIVEN_URL, boolean toFile, String key) {
+        this.GIVEN_URL = GIVEN_URL;
         this.toFile = toFile;
+        this.key = key;
     }
 
     private static List<String> paragraphs;
@@ -36,21 +44,24 @@ public class ParagraphHTMLRequest implements HTMLRequest {
     /**
      * Execute ParagraphRequest
      */
-    public void execute() {
-        if (NetworkUtil.checkConnectionIsValid(givenUrl)) {
-            String page = ClientRequestManager.attemptClientRequest(givenUrl);
-            if (findParagraphs(page)) {
-                try {
-                    if (toFile) {
-                        runWithFileOutput();
-                    } else {
-                        outputParagraphs();
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+    public void execute(String page) {
+        LOG.info("Starting Paragraph Request.");
+        if (findParagraphs(page)) {
+            try {
+                if (toFile) {
+                    runWithFileOutput();
+                } else {
+                    outputParagraphs();
                 }
+            } catch (IOException ex) {
+                LOG.error("Failed to write data to File from: {} with error: {}", GIVEN_URL, ex);
+                ex.printStackTrace();
             }
         }
+    }
+
+    public String getUrl() {
+        return GIVEN_URL;
     }
 
     private boolean findParagraphs(String page) {
