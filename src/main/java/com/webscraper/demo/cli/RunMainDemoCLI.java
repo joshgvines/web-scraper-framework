@@ -1,4 +1,4 @@
-package com.webscraper.demo;
+package com.webscraper.demo.cli;
 
 import com.webscraper.demo.cli.WebScraperCLI;
 

@@ -33,10 +33,11 @@
 /build
 /out
 
-# Output from framwork
+# Demo & Output from framework
 /output
 resources/output
-src/main/output
+src/main/resources/output
+/src/main/java/com/webscraper/demo/other
 
 /.gradle
 /gradle
