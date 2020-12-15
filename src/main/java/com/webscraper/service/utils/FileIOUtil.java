@@ -1,8 +1,12 @@
 package com.webscraper.service.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Handles File IO and output directory processes.
@@ -39,6 +43,25 @@ public final class FileIOUtil {
             }
         }
         return true;
+    }
+
+    public static Properties readProperties() {
+        FileInputStream fileInputStream = null;
+        Properties properties = null;
+        try {
+            File file = new File("webscraper.properties");
+            if (file.exists()) {
+                fileInputStream = new FileInputStream(file);
+                properties = new Properties();
+                properties.load(fileInputStream);
+                return properties;
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 }
