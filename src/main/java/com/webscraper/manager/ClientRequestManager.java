@@ -12,7 +12,7 @@ import java.time.Duration;
 
 public class ClientRequestManager {
 
-    private static final Logger LOG = LogManager.getLogger(WebScraper.class);
+    private static final Logger LOG = LogManager.getLogger(ClientRequestManager.class);
 
     private static HttpClient httpClient;
     private static String pageString;
@@ -20,7 +20,7 @@ public class ClientRequestManager {
     public static String attemptClientRequest(String givenURL) {
         httpClient = buildClient();
         try {
-            String preDomain = givenURL.substring(0, givenURL.indexOf("."));
+            String preDomain = givenURL.substring(0, givenURL.lastIndexOf("."));
             LOG.info("Attempting Client Request: {}", preDomain);
             httpClient.sendAsync(buildRequest(givenURL), HttpResponse.BodyHandlers.ofString())
                     .thenApply(HttpResponse::body)
@@ -44,7 +44,7 @@ public class ClientRequestManager {
     private static HttpRequest buildRequest(String givenURL) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(givenURL))
-                .timeout(Duration.ofMinutes(1))
+                .timeout(Duration.ofSeconds(10))
                 .header("Content-Type", "application/json")
 //                .header("accept", "application/json")
                 .build();

@@ -5,6 +5,8 @@ public interface HTMLRequest {
     /**
      * Execute HTML Request.
      */
-    void execute();
+    void execute(String page);
+
+    String getUrl();
 
 }

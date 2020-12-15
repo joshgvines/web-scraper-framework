@@ -1,7 +1,6 @@
 package com.webscraper;
 
-import com.webscraper.controller.HTMLRequestController;
-import com.webscraper.controller.impl.TagHTMLRequestController;
+import com.webscraper.controller.impl.TagHTMLTagRequestController;
 import com.webscraper.filters.HtmlFilter;
 import com.webscraper.service.utils.FileIOUtil;
 import org.apache.logging.log4j.LogManager;
@@ -21,19 +20,23 @@ public class WebScraper {
      * @param givenUrl
      */
     public static void runHTMLRequest(boolean toFile, HtmlFilter requestType, String givenUrl)  {
+        runHTMLRequest(toFile, requestType, givenUrl, null);
+    }
+
+    public static void runHTMLRequest(boolean toFile, HtmlFilter requestType, String givenUrl, String key)  {
         if (toFile) {
             if (!FileIOUtil.buildDefaultEnvironment()) {
                 LOG.error("Failed to build output environment.");
                 throw new IllegalStateException("Failed to build output environment.");
             }
         }
-        TagHTMLRequestController controller = TagHTMLRequestController.getHandler();
+        TagHTMLTagRequestController controller = TagHTMLTagRequestController.getInstance();
         switch (requestType) {
-            case FIND_IMAGE: controller.imageRequest(givenUrl, toFile);
+            case FIND_IMAGE: controller.imageRequest(givenUrl, toFile, key);
                 break;
-            case FIND_PARAGRAPH: controller.paragraphRequest(givenUrl, toFile);
+            case FIND_PARAGRAPH: controller.paragraphRequest(givenUrl, toFile, key);
                 break;
-            case FIND_ANY_HTTPS_URL: controller.linkRequest(givenUrl, toFile);
+            case FIND_HTTP_URL: controller.linkRequest(givenUrl, toFile, key);
                 break;
             default: System.out.println("RequestType Not Supported...");
         }
