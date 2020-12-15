@@ -2,7 +2,7 @@ package com.webscraper.service.request.html.impl;
 
 import com.webscraper.filters.HtmlFilter;
 import com.webscraper.service.request.html.HTMLRequest;
-import com.webscraper.service.utils.FileIOUtil;
+import com.webscraper.service.utils.FileIOResourceUtil;
 import com.webscraper.service.utils.RegexPatternUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -104,7 +104,9 @@ public class ImageHTMLRequest implements HTMLRequest {
     }
 
     private FileWriter buildImageFile() throws IOException {
-        File file = new File(FileIOUtil.HTML_LOC + "images.html");
+        final String FILE_NAME = "images.html";
+        File file = new File(FileIOResourceUtil.FILE_OUT_RESOURCE.get(
+                        FileIOResourceUtil.HTML_LOCATION) + FILE_NAME);
         if (!file.exists()) {
             file.createNewFile();
         }

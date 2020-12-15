@@ -14,26 +14,13 @@ public class LinksToFIleDemo {
 //                 true, ".svg"
 //         ).execute();
 
-        new ImageHTMLRequest(
-                "https://github.com/joshgvines/mockomatik/tree/feature_e/create_complex_test_method_templates/src/main/resources",
-                true, null
-        ).execute();
+        WebScraper.runHTMLRequest(true,HtmlFilter.FIND_IMAGE,
+                "https://skillcrush.com/break-into-tech-blueprint", null);
 
-        new LinkHTMLRequest(
-                "https://skillcrush.com/break-into-tech-blueprint",
-                true, null
-        ).execute();
 
-//        WebScraper.runHTMLRequest(
-//                true, HtmlFilter.FIND_IMAGE,
-//                "https://www.edureka.co/blog/dynamic-web-pages-in-java/");
-//
-//        WebScraper.runHTMLRequest(
-//                true, HtmlFilter.FIND_ANY_HTTPS_URL,
-//                "https://www.edureka.co/blog/dynamic-web-pages-in-java/");
-//
-//        WebScraper.runHTMLRequest(
-//                true, HtmlFilter.FIND_PARAGRAPH,
-//                "https://www.edureka.co/blog/dynamic-web-pages-in-java/");
+//        new LinkHTMLRequest(
+//                "https://skillcrush.com/break-into-tech-blueprint",
+//                true, null
+//        );
     }
 }

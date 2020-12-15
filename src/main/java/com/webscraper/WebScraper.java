@@ -2,7 +2,7 @@ package com.webscraper;
 
 import com.webscraper.controller.impl.TagHTMLTagRequestController;
 import com.webscraper.filters.HtmlFilter;
-import com.webscraper.service.utils.FileIOUtil;
+import com.webscraper.service.utils.FileIOResourceUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,29 +32,25 @@ public class WebScraper {
         }
         TagHTMLTagRequestController controller = TagHTMLTagRequestController.getInstance();
         switch (requestType) {
-            case FIND_IMAGE:
-                controller.imageRequest(givenUrl, toFile, key);
+            case FIND_IMAGE: controller.imageRequest(givenUrl, toFile, key);
                 break;
-            case FIND_PARAGRAPH:
-                controller.paragraphRequest(givenUrl, toFile, key);
+            case FIND_PARAGRAPH: controller.paragraphRequest(givenUrl, toFile, key);
                 break;
-            case FIND_HTTP_URL:
-                controller.linkRequest(givenUrl, toFile, key);
+            case FIND_HTTP_URL: controller.linkRequest(givenUrl, toFile, key);
                 break;
-            default:
-                System.out.println("RequestType Not Supported...");
+            default: System.out.println("RequestType Not Supported...");
         }
     }
 
     private static boolean buildEnvironment() {
-        Properties properties = FileIOUtil.readProperties();
+        Properties properties = FileIOResourceUtil.readPropertiesFile();
         if (properties != null) {
-            properties.getProperty("location.root");
-            properties.getProperty("location.js");
-            properties.getProperty("location.html");
-            properties.getProperty("location.css");
+            if (!FileIOResourceUtil.buildOverrideEnvironment(properties)) {
+                LOG.error("Failed to build output environment.");
+                throw new IllegalStateException("Failed to build output environment.");
+            }
         } else {
-            if (!FileIOUtil.buildDefaultEnvironment()) {
+            if (!FileIOResourceUtil.buildDefaultEnvironment()) {
                 LOG.error("Failed to build output environment.");
                 throw new IllegalStateException("Failed to build output environment.");
             }

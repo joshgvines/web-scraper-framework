@@ -31,8 +31,12 @@
 
 # Output/Gradle & Generated
 /build
-/output
 /out
+
+# Output from framwork
+/output
+resources/output
+src/main/output
 
 /.gradle
 /gradle

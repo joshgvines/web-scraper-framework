@@ -2,7 +2,6 @@ package com.webscraper.demo;
 
 import com.webscraper.service.request.html.HTMLRequest;
 import com.webscraper.service.request.html.impl.ParagraphHTMLRequest;
-import com.webscraper.controller.impl.TagHTMLRequestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +29,6 @@ public class MultiRequestDemo {
 //        requestMap.add("http://tutorials.jenkov.com/java-concurrency/threadlocal.html", new ParagraphRequest());
 //        requestMap.add("http://tutorials.jenkov.com/java-concurrency/nested-monitor-lockout.html", new ParagraphRequest());
 
-        TagHTMLRequestController requestHandler = TagHTMLRequestController.getHandler();
-        requestHandler.multiRequest(HTMLRequestMap);
 
         long endTime = System.nanoTime();
 
