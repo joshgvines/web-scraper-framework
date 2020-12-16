@@ -26,9 +26,16 @@ public class WebScraper {
         runHTMLRequest(toFile, requestType, givenUrl, null);
     }
 
+    /**
+     *
+     * @param toFile
+     * @param requestType
+     * @param givenUrl
+     * @param key
+     */
     public static void runHTMLRequest(boolean toFile, HtmlFilter requestType, String givenUrl, String key) {
         if (toFile) {
-            buildEnvironment();
+            FileIOResourceUtil.buildEnvironment();
         }
         TagHTMLTagRequestController controller = TagHTMLTagRequestController.getInstance();
         switch (requestType) {
@@ -40,22 +47,6 @@ public class WebScraper {
                 break;
             default: System.out.println("RequestType Not Supported...");
         }
-    }
-
-    private static boolean buildEnvironment() {
-        Properties properties = FileIOResourceUtil.readPropertiesFile();
-        if (properties != null) {
-            if (!FileIOResourceUtil.buildOverrideEnvironment(properties)) {
-                LOG.error("Failed to build output environment.");
-                throw new IllegalStateException("Failed to build output environment.");
-            }
-        } else {
-            if (!FileIOResourceUtil.buildDefaultEnvironment()) {
-                LOG.error("Failed to build output environment.");
-                throw new IllegalStateException("Failed to build output environment.");
-            }
-        }
-        return true;
     }
 
 }

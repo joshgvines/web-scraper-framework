@@ -1,7 +1,7 @@
 package com.webscraper.controller.impl;
 
 import com.webscraper.controller.HTMLTagRequestController;
-import com.webscraper.manager.ClientRequestManager;
+import com.webscraper.service.manager.ClientRequestManager;
 import com.webscraper.service.request.html.HTMLRequest;
 import com.webscraper.service.request.html.impl.ImageHTMLRequest;
 import com.webscraper.service.request.html.impl.LinkHTMLRequest;
@@ -82,7 +82,6 @@ public final class TagHTMLTagRequestController implements HTMLTagRequestControll
                     GIVEN_URL.substring(0, GIVEN_URL.lastIndexOf(".")));
             String page = ClientRequestManager.attemptClientRequest(GIVEN_URL);
             if (page != null && (page.contains("html") || page.contains("HTML"))) {
-                System.out.println(page);
                 hTMLRequest.execute(page);
             }
 

@@ -20,6 +20,7 @@ public class ImageHTMLRequest implements HTMLRequest {
 
     private static final Logger LOG = LogManager.getLogger(ImageHTMLRequest.class);
 
+    private final String FILE_NAME = "images.html";
     private final String GIVEN_URL;
     private String key;
     private boolean toFile;
@@ -75,6 +76,10 @@ public class ImageHTMLRequest implements HTMLRequest {
         return !(images.isEmpty());
     }
 
+    /**
+     * TODO: Might have it do a link search on every tag with more than one URL?
+     * @throws IOException
+     */
     private void outputImages() throws IOException {
         String newLine = System.getProperty("line.separator");
         for (String image : images) {
@@ -82,7 +87,7 @@ public class ImageHTMLRequest implements HTMLRequest {
                 image = image.replace("//", "https://");
             }
             // Force all urls to be individual image tags.
-            if (image.contains("data-src=")) {
+            if (image.contains("data-src=") || image.contains("alt=")) {
                 List<String> urls = RegexPatternUtil.lookForHTMLMatches(HtmlFilter.FIND_HTTP_URL, image, null);
                 image = "";
                 for (String url : urls) {
@@ -104,9 +109,8 @@ public class ImageHTMLRequest implements HTMLRequest {
     }
 
     private FileWriter buildImageFile() throws IOException {
-        final String FILE_NAME = "images.html";
-        File file = new File(FileIOResourceUtil.FILE_OUT_RESOURCE.get(
-                        FileIOResourceUtil.HTML_LOCATION) + FILE_NAME);
+        final String OUT_PATH = FileIOResourceUtil.getResource(FileIOResourceUtil.HTML_LOCATION_KEY) + FILE_NAME;
+        File file = new File(OUT_PATH);
         if (!file.exists()) {
             file.createNewFile();
         }

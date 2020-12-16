@@ -20,7 +20,7 @@ public final class RegexPatternUtil {
      * @param page
      *      A string containing the entire page content.
      * @param key
-     *      Used to only add found matches that contain specific desired content.
+     *      Used to add matches which contain specific desired content.
      * @return List<String> pageContentList
      *      All found matches.
      */
@@ -46,7 +46,7 @@ public final class RegexPatternUtil {
     }
 
     /**
-     * TODO: this will change via needs for script regex filter needs, or will be deleted.
+     * TODO: this will change via needs for script regex filter, or will be deleted.
      * @param filter
      * @param page
      * @return

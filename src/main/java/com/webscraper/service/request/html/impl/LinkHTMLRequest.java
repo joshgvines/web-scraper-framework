@@ -17,6 +17,7 @@ public class LinkHTMLRequest implements HTMLRequest {
 
     private static final Logger LOG = LogManager.getLogger(LinkHTMLRequest.class);
 
+    private final String FILE_NAME = "links.html";
     private final String GIVEN_URL;
     private String key;
     private boolean toFile;
@@ -94,9 +95,8 @@ public class LinkHTMLRequest implements HTMLRequest {
     }
 
     private FileWriter buildLinkFile() throws IOException {
-        final String FILE_NAME = "links.html";
-        File file = new File(FileIOResourceUtil.FILE_OUT_RESOURCE.get(
-                FileIOResourceUtil.HTML_LOCATION) + FILE_NAME);
+        final String OUT_PATH = FileIOResourceUtil.getResource(FileIOResourceUtil.HTML_LOCATION_KEY) + FILE_NAME;
+        File file = new File(OUT_PATH);
         if (!file.exists()) {
             file.createNewFile();
         }

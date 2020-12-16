@@ -1,6 +1,5 @@
-package com.webscraper.manager;
+package com.webscraper.service.manager;
 
-import com.webscraper.WebScraper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,8 +26,8 @@ public class ClientRequestManager {
                     .thenApply(ClientRequestManager::parse)
                     .join();
             LOG.info("Closing Client Request With: {}", preDomain);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            LOG.error("HttpClient Failed with error: {}", ex);
             pageString = "BAD_CONN_ERROR";
         }
         return pageString;

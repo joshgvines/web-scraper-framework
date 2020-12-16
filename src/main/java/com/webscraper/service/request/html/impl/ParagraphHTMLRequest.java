@@ -17,6 +17,7 @@ public class ParagraphHTMLRequest implements HTMLRequest {
 
     private static final Logger LOG = LogManager.getLogger(ParagraphHTMLRequest.class);
 
+    private final String FILE_NAME = "paragraphs.html";
     private final String GIVEN_URL;
     private String key;
     private boolean toFile;
@@ -52,7 +53,7 @@ public class ParagraphHTMLRequest implements HTMLRequest {
                     outputParagraphs();
                 }
             } catch (IOException ex) {
-                LOG.error("Failed to write data to File from: {} with error: {}", GIVEN_URL, ex);
+                LOG.error("Failed to write request data to File with error: {}", ex);
                 ex.printStackTrace();
             }
         }
@@ -85,9 +86,8 @@ public class ParagraphHTMLRequest implements HTMLRequest {
     }
 
     private FileWriter buildLinkFile() throws IOException {
-        final String FILE_NAME = "paragraphs.html";
-        File file = new File(FileIOResourceUtil.FILE_OUT_RESOURCE.get(
-                FileIOResourceUtil.HTML_LOCATION) + FILE_NAME);
+        final String OUT_PATH = FileIOResourceUtil.getResource(FileIOResourceUtil.HTML_LOCATION_KEY) + FILE_NAME;
+        File file = new File(OUT_PATH);
         if (!file.exists()) {
             file.createNewFile();
         }

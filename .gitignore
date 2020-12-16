@@ -1,6 +1,8 @@
 # .gitignore file #
 
+# Demo files
 /demo
+/src/main/java/demo/other
 
 # Basic Settings & IDE
 /.idea
@@ -34,6 +36,7 @@
 /out
 
 # Demo & Output from framework
+/public
 /output
 resources/output
 src/main/resources/output
@@ -51,6 +54,12 @@ gradlew.bat
 /bin
 /SHJLogs
 SHJLogs/
+
+# Other project files
+*.iml
+*.ipr
+*.swp
+*.iws
 
 # BlueJ files
 *.ctxt

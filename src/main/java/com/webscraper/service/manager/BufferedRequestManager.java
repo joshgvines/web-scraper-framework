@@ -1,4 +1,4 @@
-package com.webscraper.manager;
+package com.webscraper.service.manager;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,8 +1,9 @@
 package com.webscraper.service.request.script.impl;
 
 import com.webscraper.filters.JavaScriptFilter;
-import com.webscraper.manager.ClientRequestManager;
+import com.webscraper.service.manager.ClientRequestManager;
 import com.webscraper.service.request.script.ScriptRequest;
+import com.webscraper.service.utils.FileIOResourceUtil;
 import com.webscraper.service.utils.NetworkUtil;
 import com.webscraper.service.utils.RegexPatternUtil;
 
@@ -17,6 +18,7 @@ import java.util.List;
  */
 public class AllScriptRequest implements ScriptRequest {
 
+    private final String FILE_NAME = "script.js";
     private String givenUrl = "";
     private boolean toFile;
     private BufferedWriter bufferedWriter;
@@ -58,6 +60,7 @@ public class AllScriptRequest implements ScriptRequest {
      * Attempt to run function in dynamic environment.
      */
     public boolean runScript() {
+        // stub
         return false;
     }
 
@@ -83,21 +86,10 @@ public class AllScriptRequest implements ScriptRequest {
         }
     }
 
-    /**
-     * Create location to ouput found script to .html file for processing.
-     * @return
-     * @throws IOException
-     */
     private FileWriter buildScriptFile() throws IOException {
-        String outputLocation = "." + File.separator+"output"
-                + File.separator + "js" + File.separator;
-
-        File file = new File( outputLocation + "JavaScripts.html");
+        final String OUT_PATH = FileIOResourceUtil.getResource(FileIOResourceUtil.JS_LOCATION_KEY) + FILE_NAME;
+        File file = new File(OUT_PATH);
         if (!file.exists()) {
-            File outputDir = new File(outputLocation);
-            if (!outputDir.exists()) {
-                outputDir.mkdir();
-            }
             file.createNewFile();
         }
         return new FileWriter(file);

@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -17,15 +16,32 @@ public final class FileIOResourceUtil {
     // Default Environment Variables
     // TODO: Make this a configuration file and resource loader.
     public static Map<String, String> FILE_OUT_RESOURCE = new HashMap<>();
-    private static final String BREAK = File.separator;
+    private static final String fs = File.separator;
 
-    private static String jsDefaultLocation = "." + BREAK + "output" + BREAK + "js" + BREAK;
-    private static String htmlDefaultLocation = "." + BREAK + "output" + BREAK + "html" + BREAK;
-    private static String cssDefaultLocation = "." + BREAK + "output" + BREAK + "css" + BREAK;
+    private static final String PROPERTIES_FILE = "webscraper.properties";
+    private static String root = "public" + fs;
+    private static String jsLocation = root + "generated" + fs + "web" + fs + "js" + fs;
+    private static String htmlLocation = root + "generated" + fs + "web" + fs + "html" + fs;
+    private static String cssLocation = root + "generated" + fs + "web" + fs + "css" + fs;
+    private static String configLocation = root + "config" + fs;
 
-    public static final String JS_LOCATION = "jsLocation";
-    public static final String HTML_LOCATION = "htmlLocation";
-    public static final String CSS_LOCATION = "cssLocation";
+    public static final String JS_LOCATION_KEY = "jsLocation";
+    public static final String HTML_LOCATION_KEY = "htmlLocation";
+    public static final String CSS_LOCATION_KEY = "cssLocation";
+    public static final String CONFIG_LOCATION_KEY = "configLocation";
+
+    public static boolean buildEnvironment() {
+        try {
+            Properties properties = FileIOResourceUtil.readPropertiesFile();
+            if (!addResources(properties)) {
+                throw new IllegalStateException("Failed to build output environment.");
+            }
+        } catch (Exception ex) {
+            LOG.error("Failed to build output environment with error: {}", ex);
+            System.exit(0);
+        }
+        return true;
+    }
 
     /**
      * Create environment for file output.
@@ -34,48 +50,52 @@ public final class FileIOResourceUtil {
      *
      * @return boolean isCreated
      */
-    public static boolean buildDefaultEnvironment() {
-        FILE_OUT_RESOURCE.put(JS_LOCATION, jsDefaultLocation);
-        FILE_OUT_RESOURCE.put(HTML_LOCATION, htmlDefaultLocation);
-        FILE_OUT_RESOURCE.put(CSS_LOCATION, cssDefaultLocation);
+    private static boolean addResources(Properties properties) throws IOException {
+        if (properties != null) {
+            // TODO: add config here if not null
+        }
+        FILE_OUT_RESOURCE.put(JS_LOCATION_KEY, jsLocation + fs);
+        FILE_OUT_RESOURCE.put(HTML_LOCATION_KEY, htmlLocation + fs);
+        FILE_OUT_RESOURCE.put(CSS_LOCATION_KEY, cssLocation + fs);
+        FILE_OUT_RESOURCE.put(CONFIG_LOCATION_KEY, configLocation + fs);
         buildDirs();
         return !(FILE_OUT_RESOURCE.isEmpty());
     }
 
-    public static boolean buildOverrideEnvironment(Properties properties) {
-        FILE_OUT_RESOURCE.put(JS_LOCATION, properties.getProperty(JS_LOCATION) + BREAK);
-        FILE_OUT_RESOURCE.put(HTML_LOCATION, properties.getProperty(HTML_LOCATION) + BREAK);
-        FILE_OUT_RESOURCE.put(CSS_LOCATION, properties.getProperty(CSS_LOCATION) + BREAK);
-        buildDirs();
-        return !(FILE_OUT_RESOURCE.isEmpty());
+    public static String getResource(String key) {
+        return FILE_OUT_RESOURCE.get(key);
     }
 
     /**
      * Create file output environment locations.
      */
-    private static void buildDirs() {
+    private static void buildDirs() throws IOException {
         for (Map.Entry<String, String> location : FILE_OUT_RESOURCE.entrySet()) {
-            File file = new File(location.getValue());
-            if (!file.exists()) {
-                file.mkdirs();
+            if (location.getValue() != null) {
+                File file = new File(location.getValue());
+                if (!file.exists()) {
+                    if (location.getValue().contains(configLocation)) {
+                        file.mkdirs();
+                        file = new File(configLocation + PROPERTIES_FILE);
+                        file.createNewFile();
+                    } else {
+                        file.mkdirs();
+                    }
+                }
             }
         }
     }
 
     public static Properties readPropertiesFile() {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        URL fileLoc = classloader.getResource("webscraper.properties");
-        if (fileLoc != null) {
-            try {
-                File file = new File(fileLoc.getPath());
-                if (file.exists()) {
-                    Properties properties = new Properties();
-                    properties.load(new FileInputStream(file));
-                    return properties;
-                }
-            } catch (Exception ex) {
-                LOG.error("Failed to load properties file: {}", ex);
+        try {
+            File file = new File(configLocation + PROPERTIES_FILE);
+            if (file.exists()) {
+                Properties properties = new Properties();
+                properties.load(new FileInputStream(file));
+                return properties;
             }
+        } catch (Exception ex) {
+            LOG.error("Failed to load properties file: {}", ex);
         }
         LOG.info("No Properties File Found, using default.");
         return null;
