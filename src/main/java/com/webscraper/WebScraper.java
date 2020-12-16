@@ -1,12 +1,10 @@
 package com.webscraper;
 
-import com.webscraper.controller.impl.TagHTMLTagRequestController;
+import com.webscraper.controller.impl.HTMLRequestController;
 import com.webscraper.filters.HtmlFilter;
 import com.webscraper.service.utils.FileIOResourceUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Properties;
 
 /**
  * Highest level of singular request abstraction.
@@ -37,7 +35,7 @@ public class WebScraper {
         if (toFile) {
             FileIOResourceUtil.buildEnvironment();
         }
-        TagHTMLTagRequestController controller = TagHTMLTagRequestController.getInstance();
+        HTMLRequestController controller = HTMLRequestController.getInstance();
         switch (requestType) {
             case FIND_IMAGE: controller.imageRequest(givenUrl, toFile, key);
                 break;

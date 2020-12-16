@@ -19,29 +19,29 @@ import java.util.concurrent.TimeUnit;
  * Controller for basic Request types.
  * Each request type is split into individual methods for ease of use from the API perspective.
  */
-public final class TagHTMLTagRequestController implements HTMLTagRequestController {
+public final class HTMLRequestController implements HTMLTagRequestController {
 
-    private static final Logger LOG = LogManager.getLogger(TagHTMLTagRequestController.class);
+    private static final Logger LOG = LogManager.getLogger(HTMLRequestController.class);
 
     private static ExecutorService execService = null;
-    private static TagHTMLTagRequestController requestHandler = null;
+    private static HTMLRequestController requestHandler = null;
 
     /**
      * Lazy singleton initialization with Double check locking
      *
      * @return RequestHandler this
      */
-    public static TagHTMLTagRequestController getInstance() {
+    public static HTMLRequestController getInstance() {
         //Synchronized block to remove overhead.
-        synchronized (TagHTMLTagRequestController.class) {
+        synchronized (HTMLRequestController.class) {
             if (requestHandler == null) {
-                requestHandler = new TagHTMLTagRequestController();
+                requestHandler = new HTMLRequestController();
             }
         }
         return requestHandler;
     }
 
-    private TagHTMLTagRequestController() {
+    private HTMLRequestController() {
     }
 
     @Override
@@ -81,12 +81,8 @@ public final class TagHTMLTagRequestController implements HTMLTagRequestControll
             LOG.info("Test connection to {} was successful",
                     GIVEN_URL.substring(0, GIVEN_URL.lastIndexOf(".")));
             String page = ClientRequestManager.attemptClientRequest(GIVEN_URL);
-            if (page != null && (page.contains("html") || page.contains("HTML"))) {
-                hTMLRequest.execute(page);
-            }
-
+            hTMLRequest.execute(page);
         }
-
     }
 
     /**

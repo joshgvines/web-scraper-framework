@@ -1,6 +1,6 @@
 package com.webscraper.demo.cli;
 
-import com.webscraper.controller.impl.TagHTMLTagRequestController;
+import com.webscraper.controller.impl.HTMLRequestController;
 
 import java.util.Scanner;
 
@@ -25,13 +25,13 @@ public class WebScraperCLI {
      * @param givenCommand
      */
     private static void readCommand(final String givenCommand) {
-        TagHTMLTagRequestController requestHandler = TagHTMLTagRequestController.getInstance();
+        HTMLRequestController requestHandler = HTMLRequestController.getInstance();
         if (givenCommand.equals(CLICommand.IMAGE.getCommand())) {
-            requestHandler.imageRequest(getUserInput(), true, null);
+            requestHandler.imageRequest(getUserInput(), false, null);
         } else if (givenCommand.equals(CLICommand.TEXT.getCommand())) {
-            requestHandler.paragraphRequest(getUserInput(), true, null);
+            requestHandler.paragraphRequest(getUserInput(), false, null);
         } else if (givenCommand.equals(CLICommand.LINK.getCommand())) {
-            requestHandler.linkRequest(getUserInput(), true, null);
+            requestHandler.linkRequest(getUserInput(), false, null);
         } else if (givenCommand.equals(CLICommand.EXIT.getCommand())) {
             System.out.println("exiting");
             System.exit(0);
